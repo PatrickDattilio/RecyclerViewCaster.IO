@@ -2,8 +2,7 @@ package io.caster.recyclerview;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,9 +14,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager.SpanSizeLookup spanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position % 4 == 0) {
+                    return 3;
+                } else {
+                    return 1;
+                }
+            }
+        };
+        gridLayoutManager.setSpanSizeLookup(spanSizeLookup);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(new SimpleRVAdapter());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+
 
     }
 }
